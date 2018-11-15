@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraclient.dal.mapper.SiteMapper">
+	<resultMap id="BaseResultMap" type="com.zebra.zebraclient.dal.dataobject.SiteDO">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="site_name" property="siteName" jdbcType="VARCHAR" />
+		<result column="site_address" property="siteAddress" jdbcType="VARCHAR" />
+		<result column="site_status" property="siteStatus" jdbcType="INTEGER" />
+		<result column="service_station_id" property="serviceStationId"
+			jdbcType="BIGINT" />
+		<result column="service_station_name" property="serviceStationName"
+			jdbcType="VARCHAR" />
+		<result column="latitude" property="latitude" jdbcType="DECIMAL" />
+		<result column="longitude" property="longitude" jdbcType="DECIMAL" />
+		<result column="province_code" property="provinceCode"
+			jdbcType="VARCHAR" />
+		<result column="province_name" property="provinceName"
+			jdbcType="VARCHAR" />
+		<result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+		<result column="city_name" property="cityName" jdbcType="VARCHAR" />
+		<result column="zone_code" property="zoneCode" jdbcType="VARCHAR" />
+		<result column="zone_name" property="zoneName" jdbcType="VARCHAR" />
+		<result column="bike_num" property="bikeNum" jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id,site_name,site_address,site_status,service_station_id,service_station_name,latitude,longitude,province_code,province_name,city_code,city_name,zone_code,zone_name,bike_num
+	</sql>
+
+	<select id="selectNearSiteByPoint" resultMap="BaseResultMap"
+		parameterType="com.zebra.zebraclient.dal.dataobject.businessObject.SiteNearBO">
+		SELECT
+		<include refid="Base_Column_List" />
+		,
+		ROUND(6378.138*2*ASIN(SQRT(POW(SIN(( #{localLatitude}
+		*PI()/180-
+		t.latitude *PI()/180)/2),2) +
+		COS(#{localLatitude}*PI()/180)*COS(t.latitude
+		*PI()/180)*POW(SIN((#{localLongitude}*PI()/180-t.longitude*PI()/180)/2),2)))*1000)
+		AS juli
+		FROM c_site t
+		WHERE 1=1
+		and t.site_status = 1
+		having juli <![CDATA[ <= ]]>
+		#{radius}
+		ORDER BY juli DESC;
+	</select>
+
+
+
+
+
+</mapper>

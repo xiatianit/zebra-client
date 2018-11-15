@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraclient.dal.mapper.CityMapper">
+	<resultMap id="BaseResultMap" type="com.zebra.zebraclient.dal.dataobject.CityDO">
+		<result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+		<result column="city_name" property="cityName" jdbcType="VARCHAR" />
+		<result column="city_abbr" property="cityAbbr" jdbcType="VARCHAR" />
+		<result column="zh_spell" property="zhSpell" jdbcType="VARCHAR" />
+		<result column="province_code" property="provinceCode"
+			jdbcType="VARCHAR" />
+		<result column="province_name" property="provinceName"
+			jdbcType="VARCHAR" />
+		<result column="is_hot" property="isHot" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		city_code,city_name,city_abbr,zh_spell,province_code,province_name,is_hot
+	</sql>
+
+	<select id="selectByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM c_city a
+	</select>
+
+</mapper>

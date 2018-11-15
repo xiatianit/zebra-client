@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraclient.dal.mapper.BikeLocusMapper">
+
+	<select id="selectByCondition"
+		resultType="com.zebra.zebraclient.dal.dataobject.businessObject.BikeLocusBO">
+		SELECT
+		latitude,longitude
+		FROM
+		c_bike_locus a WHERE
+		a.bike_code = #{bikeCode,jdbcType=VARCHAR}
+		and a.order_id =
+		#{orderId,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

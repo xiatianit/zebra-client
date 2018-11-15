@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraclient.dal.mapper.UserExtendMapper">
+	<resultMap id="BaseResultMap"
+		type="com.zebra.zebraclient.dal.dataobject.UserExtendDO">
+		<result column="uid" property="uid" jdbcType="BIGINT" />
+		<result column="total_distance" property="totalDistance"
+			jdbcType="DOUBLE" />
+		<result column="save_time" property="saveTime" jdbcType="INTEGER" />
+		<result column="save_price" property="savePrice" jdbcType="DOUBLE" />
+		<result column="total_fee" property="totalFee" jdbcType="DOUBLE" />
+		<result column="total_ridetime" property="totalRidetime" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		uid,total_distance,save_time,save_price,total_fee,total_ridetime
+	</sql>
+
+
+	<select id="selectByUid" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM c_user_extend a WHERE a.uid = #{uid,jdbcType=BIGINT}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="uid"
+		parameterType="com.zebra.zebraclient.dal.dataobject.UserExtendDO">
+		INSERT INTO c_user_extend
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="totalDistance != null">
+				total_distance,
+			</if>
+			<if test="saveTime != null">
+				save_time,
+			</if>
+			<if test="savePrice != null">
+				save_price,
+			</if>
+			<if test="totalFee != null">
+				total_fee,
+			</if>
+			<if test="totalRidetime != null">
+				total_ridetime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="uid != null">
+				#{uid,jdbcType=BIGINT},
+			</if>
+
+			<if test="totalDistance != null">
+				#{totalDistance,jdbcType=DOUBLE},
+			</if>
+
+			<if test="saveTime != null">
+				#{saveTime,jdbcType=INTEGER},
+			</if>
+
+			<if test="savePrice != null">
+				#{savePrice,jdbcType=DOUBLE},
+			</if>
+			<if test="totalFee != null">
+				#{totalFee,jdbcType=DOUBLE},
+			</if>
+
+			<if test="totalRidetime != null">
+				#{totalRidetime,jdbcType=INTEGER},
+			</if>
+
+		</trim>
+	</insert>
+
+	<update id="update" parameterType="com.zebra.zebraclient.dal.dataobject.UserExtendDO">
+		UPDATE c_user_extend
+		<set>
+			<if test="uid != null">
+				uid = #{uid,jdbcType=BIGINT},
+			</if>
+
+			<if test="totalDistance != null">
+				total_distance = #{totalDistance,jdbcType=DOUBLE},
+			</if>
+
+			<if test="saveTime != null">
+				save_time = #{saveTime,jdbcType=INTEGER},
+			</if>
+
+			<if test="savePrice != null">
+				save_price = #{savePrice,jdbcType=DOUBLE},
+			</if>
+				<if test="totalFee != null">
+				total_fee = #{totalFee,jdbcType=DOUBLE},
+			</if>
+
+			<if test="totalRidetime != null">
+				total_ridetime = #{totalRidetime,jdbcType=INTEGER},
+			</if>
+		</set>
+		where uid = #{uid,jdbcType=BIGINT}
+	</update>
+</mapper>

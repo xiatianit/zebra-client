@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraclient.dal.mapper.UserAddressMapper">
+	<resultMap id="BaseResultMap"
+		type="com.zebra.zebraclient.dal.dataobject.UserAddressDO">
+		<result column="id" property="id" jdbcType="BIGINT" />
+		<result column="uid" property="uid" jdbcType="BIGINT" />
+		<result column="address_type" property="addressType" jdbcType="INTEGER" />
+		<result column="latitude" property="latitude" jdbcType="DECIMAL" />
+		<result column="longitude" property="longitude" jdbcType="DECIMAL" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="sub_address" property="subAddress" jdbcType="VARCHAR" />
+		<result column="poi_id" property="poiId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,uid,address_type,latitude,longitude,address,sub_address,poi_id
+	</sql>
+	
+	<select id="selectByAddTypeAndUid" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM c_user_address a WHERE a.uid = #{uid,jdbcType=BIGINT} and a.address_type = #{addressType,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM c_user_address a WHERE a.uid = #{uid,jdbcType=BIGINT}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.zebra.zebraclient.dal.dataobject.UserAddressDO">
+		INSERT INTO c_user_address 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		    <if test="id != null">
+				id,
+			</if>
+			<if test="uid != null">
+				uid,
+			</if>
+			<if test="addressType != null">
+				address_type,
+			</if>
+			<if test="latitude != null">
+				latitude,
+			</if>
+			<if test="longitude != null">
+				longitude,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="subAddress != null">
+				sub_address,
+			</if>
+			<if test="poiId != null">
+				poi_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		    <if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="uid != null">
+				#{uid,jdbcType=BIGINT},
+			</if>
+			<if test="addressType != null">
+				#{addressType,jdbcType=INTEGER},
+			</if>
+			<if test="latitude != null">
+				#{latitude,jdbcType=DECIMAL},
+			</if>
+			<if test="longitude != null">
+				#{longitude,jdbcType=DECIMAL},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="subAddress != null">
+				#{subAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="poiId != null">
+				#{poiId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="com.zebra.zebraclient.dal.dataobject.UserAddressDO">
+		UPDATE c_user_address
+		<set>
+		   <if test="addressType != null">
+				address_type = #{addressType,jdbcType=INTEGER},
+			</if>
+			
+			<if test="latitude != null">
+				latitude = #{latitude,jdbcType=DECIMAL},
+			</if>
+			<if test="longitude != null">
+				longitude = #{longitude,jdbcType=DECIMAL},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="subAddress != null">
+				sub_address = #{subAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="poiId != null">
+				poi_id = #{poiId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where uid = #{uid,jdbcType=BIGINT} and address_type = #{addressType,jdbcType=INTEGER}
+	</update>
+	
+	<delete id="deleteByAddTypeAndUid" >
+		delete from  c_user_address 
+		where uid = #{uid,jdbcType=BIGINT} and address_type = #{addressType,jdbcType=INTEGER}
+	</delete>
+	
+	
+</mapper>

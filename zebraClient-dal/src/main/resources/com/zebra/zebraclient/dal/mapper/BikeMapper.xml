@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraclient.dal.mapper.BikeMapper">
+	<resultMap id="BaseResultMap" type="com.zebra.zebraclient.dal.dataobject.BikeDO">
+		<result column="bike_code" property="bikeCode" jdbcType="VARCHAR" />
+		<result column="bike_no" property="bikeNo" jdbcType="VARCHAR" />
+		<result column="bike_model" property="bikeModel" jdbcType="VARCHAR" />
+		<result column="city_code" property="cityCode" jdbcType="VARCHAR" />
+		<result column="city_name" property="cityName" jdbcType="VARCHAR" />
+		<result column="zone_code" property="zoneCode" jdbcType="VARCHAR" />
+		<result column="zone_name" property="zoneName" jdbcType="VARCHAR" />
+		<result column="site_id" property="siteId" jdbcType="BIGINT" />
+		<result column="site_name" property="siteName" jdbcType="VARCHAR" />
+		<result column="bike_plate_no" property="bikePlateNo" jdbcType="VARCHAR" />
+		<result column="plate_end_time" property="plateEndTime"
+			jdbcType="BIGINT" />
+		<result column="bike_source" property="bikeSource" jdbcType="INTEGER" />
+		<result column="bike_status" property="bikeStatus" jdbcType="INTEGER" />
+		<result column="lock_status" property="lockStatus" jdbcType="INTEGER" />
+		<result column="battery_code" property="batteryCode" jdbcType="VARCHAR" />
+		<result column="latitude" property="latitude" jdbcType="DECIMAL" />
+		<result column="longitude" property="longitude" jdbcType="DECIMAL" />
+		<result column="current_address" property="currentAddress"
+			jdbcType="VARCHAR" />
+		<result column="limit_area" property="limitArea" jdbcType="VARCHAR" />
+		<result column="opera_time" property="operaTime" jdbcType="BIGINT" />
+		<result column="warranty_start" property="warrantyStart"
+			jdbcType="BIGINT" />
+		<result column="warranty_end" property="warrantyEnd" jdbcType="BIGINT" />
+		<result column="warranty_remark" property="warrantyRemark"
+			jdbcType="VARCHAR" />
+		<result column="sid" property="sid" jdbcType="BIGINT" />
+
+		<result column="franchiser_code" property="franchiserCode" jdbcType="VARCHAR" />
+		<result column="franchiser_name" property="franchiserName" jdbcType="VARCHAR" />
+		<result column="gprs_phone" property="gprsPhone" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="INTEGER" />
+		<result column="battery_elec" property="batteryElec" jdbcType="INTEGER" />
+		<result column="rest_mileage" property="restMileage" jdbcType="DOUBLE" />
+	</resultMap>
+
+
+	<resultMap id="BaseResultMapMills" extends="BaseResultMap"
+		type="com.zebra.zebraclient.dal.dataobject.BikeDO">
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		bike_code,bike_no,bike_model,city_code,city_name,zone_code,zone_name,
+		site_id,site_name,bike_plate_no,plate_end_time,bike_source,
+		bike_status,lock_status,battery_code,latitude,longitude,current_address,
+		limit_area,opera_time,warranty_start,warranty_end,warranty_remark,sid,
+		franchiser_code,franchiser_name,gprs_phone,create_time,battery_elec,rest_mileage
+	</sql>
+
+	<select id="selectNearBikeByCondition"
+		parameterType="com.zebra.zebraclient.dal.dataobject.businessObject.BikeBO"
+		resultMap="BaseResultMapMills">
+		select
+		<include refid="Base_Column_List" />
+		,
+		ROUND(6378.138*2*ASIN(SQRT(POW(SIN(( #{localLatitude} *PI()/180-
+		t.latitude *PI()/180)/2),2) +
+		COS(#{localLatitude}*PI()/180)*COS(t.latitude
+		*PI()/180)*POW(SIN((#{localLongitude}*PI()/180-t.longitude*PI()/180)/2),2)))*1000)
+		AS juli
+		FROM c_bike t
+		WHERE 1=1
+		and t.bike_status = 3
+		having juli <![CDATA[ <= ]]>
+		#{radius}
+		ORDER BY juli DESC
+	</select>
+
+	<select id="selectByPk" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM c_bike a WHERE a.bike_code = #{bikeCode,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByBikeNo" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM c_bike a WHERE a.bike_no = #{bikeNo,jdbcType=VARCHAR}
+	</select>
+
+	<update id="update" parameterType="com.zebra.zebraclient.dal.dataobject.BikeDO">
+		UPDATE c_bike
+		<set>
+			<if test="bikeCode != null">
+				bike_code = #{bikeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="bikeModel != null">
+				bike_model = #{bikeModel,jdbcType=VARCHAR},
+			</if>
+			<if test="siteId != null">
+				site_id = #{siteId,jdbcType=VARCHAR},
+			</if>
+			<if test="siteName != null">
+				site_name = #{siteName,jdbcType=VARCHAR},
+			</if>
+			<if test="bikePlateNo != null">
+				bike_plate_no = #{bikePlateNo,jdbcType=VARCHAR},
+			</if>
+			<if test="plateEndTime != null">
+				plate_end_time = #{plateEndTime,jdbcType=BIGINT},
+			</if>
+			<if test="bikeSource != null">
+				bike_source = #{bikeSource,jdbcType=INTEGER},
+			</if>
+			<if test="bikeStatus != null">
+				bike_status = #{bikeStatus,jdbcType=INTEGER},
+			</if>
+			<if test="lockStatus != null">
+				lock_status = #{lockStatus,jdbcType=INTEGER},
+			</if>
+			<if test="batteryCode != null">
+				battery_code = #{batteryCode,jdbcType=VARCHAR},
+			</if>
+
+			<if test="latitude != null">
+				latitude = #{latitude,jdbcType=DECIMAL},
+			</if>
+			<if test="longitude != null">
+				longitude = #{longitude,jdbcType=DECIMAL},
+			</if>
+
+			<if test="batteryElec != null">
+				battery_elec = #{batteryElec,jdbcType=INTEGER},
+			</if>
+
+			<if test="restMileage != null">
+				rest_mileage = #{restMileage,jdbcType=DOUBLE},
+			</if>
+
+			<if test="currentAddress != null">
+				current_address = #{currentAddress,jdbcType=VARCHAR},
+			</if>
+
+			<if test="limitArea != null">
+				limit_area = #{limitArea,jdbcType=BIGINT},
+			</if>
+			<if test="warrantyStart != null">
+				warranty_start = #{warrantyStart,jdbcType=BIGINT},
+			</if>
+			<if test="warrantyEnd != null">
+				warranty_end = #{warrantyEnd,jdbcType=BIGINT},
+			</if>
+			<if test="warrantyRemark != null">
+				warranty_remark = #{warrantyRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="sid != null">
+				sid = #{sid,jdbcType=BIGINT},
+			</if>
+		</set>
+		where bike_code = #{bikeCode,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

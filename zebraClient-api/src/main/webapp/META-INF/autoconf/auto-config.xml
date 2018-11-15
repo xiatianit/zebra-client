@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config description="自动配置">
+
+	<group name="SpringBoot配置">
+		<property name="server.port" defaultValue="8090" description="main方法启动端口" />
+		<property name="server.contextPath" defaultValue="/zebraclientapi"
+			description="main方法启动ContentPath" />
+		<property name="spring.application.name" defaultValue="zebraclient-api"
+			description="springBoot标识" />
+	</group>
+
+	<group name="Redis配置">
+		<property name="spring.redis.database" defaultValue="0"
+			description="redis数据库，默认0" />
+		<property name="spring.redis.host" defaultValue="47.96.36.210"
+			description="redis地址" />
+		<property name="spring.redis.port" defaultValue="6379"
+			description="redis端口" />
+		<property name="spring.redis.password" defaultValue="ebike&amp;2017&amp;"
+			description="redis密码" />
+		<property name="spring.redis.timeout" defaultValue="0"
+			description="链接超时" />
+		<property name="spring.redis.pool.max-active" defaultValue="100"
+			description="redis最大活动数" />
+		<property name="spring.redis.pool.max-wait" defaultValue="-1"
+			description="redis等待" />
+		<property name="spring.redis.pool.max-idle" defaultValue="20"
+			description="spring.redis.pool.max-idle 密码" />
+		<property name="spring.redis.pool.min-idle" defaultValue="0"
+			description="spring.redis.pool.min-idle" />
+	</group>
+
+	<group name="MQ事件推送配置">
+		<property name="spring.rabbitmq.host" defaultValue="47.96.36.210"
+			description="mq 地址" />
+		<property name="spring.rabbitmq.port" defaultValue="5672"
+			description="mq 端口" />
+		<property name="spring.rabbitmq.username" defaultValue="ebike"
+			description="mq 用户名" />
+		<property name="spring.rabbitmq.password" defaultValue="ebike#2017"
+			description="mq 密码" />
+		<property name="spring.rabbitmq.virtualHost" defaultValue="/ebike"
+			description="rabbitmq virtualHost" />
+	</group>
+
+	<group name="DB配置">
+		<property name="datasource.master.host" defaultValue="db2.banmabike.com"
+			description="DB地址" />
+		<property name="datasource.master.port" defaultValue="3306"
+			description="DB端口" />
+		<property name="datasource.master.db" defaultValue="ebike"
+			description="DB 实例" />
+		<property name="datasource.master.username" defaultValue="ebike"
+			description="DB 用户名" />
+		<property name="datasource.master.password" defaultValue="Ebike#@!2017"
+			description="DB 密码" />
+		<property name="datasource.master.mappersPath" defaultValue="com.zebra.zebraclient.dal.mapper"
+			description="mapper path" />
+		<property name="datasource.master.maxIdle" defaultValue="10"
+			description="DB 链接数" />
+		<property name="datasource.master.minIdle" defaultValue="5"
+			description="DB 最小链接数" />
+		<property name="datasource.master.maxActive" defaultValue="20"
+			description="DB 最大链接数" />
+
+		<property name="datasource.slave.host" defaultValue="db2.banmabike.com"
+			description="DB地址" />
+		<property name="datasource.slave.port" defaultValue="3306"
+			description="DB端口" />
+		<property name="datasource.slave.db" defaultValue="ebike"
+			description="DB 实例" />
+		<property name="datasource.slave.username" defaultValue="ebike"
+			description="DB 用户名" />
+		<property name="datasource.slave.password" defaultValue="Ebike#@!2017"
+			description="DB 密码" />
+		<property name="datasource.slave.mappersPath" defaultValue="com.zebra.zebraclient.dal.mapper"
+			description="mapper path" />
+		<property name="datasource.slave.maxIdle" defaultValue="10"
+			description="DB 链接数" />
+		<property name="datasource.slave.minIdle" defaultValue="5"
+			description="DB 最小链接数" />
+		<property name="datasource.slave.maxActive" defaultValue="20"
+			description="DB 最大链接数" />
+	</group>
+
+	<group name="系统业务变量全局配置">
+		<property name="business.param.userTokenEffectiveTime"
+			defaultValue="86400" description="用户token失效时间 24 * 60 * 60" />
+		<property name="business.param.userLoginAuthCodeEffectiveTime"
+			defaultValue="900" description="用户发送手机验证码失效时间 15 * 60" />
+		<property name="business.param.userSearchNearBikeRadius"
+			defaultValue="5000" description="用户获取附近车辆半径的距离 单位:米" />
+		<property name="business.param.batteryFullMils" defaultValue="40.00"
+			description="电池满格，可跑40公里 单位:千米" />
+		<property name="business.param.bikeBatteryElecQuanlityLow"
+			defaultValue="5" description="电车电池电量低于5时，则给予提示" />
+
+		<property name="business.param.priceDesc" defaultValue="0.1元/分钟"
+			description="电车计费价格描述 最低消费一元钱" />
+		<property name="business.param.pricePerMin" defaultValue="0.1"
+			description="每分钟多少钱" />
+		<property name="business.param.lowestCost" defaultValue="1.0"
+			description="最低消费金额" />
+		<property name="business.param.disposit" defaultValue="299"
+			description="押金金额" />
+		<property name="business.param.userLockNearSiteRadius" defaultValue="50"
+			description="附近停车热点距离" />
+
+		<property name="business.param.alipaySellerId" defaultValue="2088611342523812"
+			description="收款支付宝用户ID， 如果该值为空，则默认为商户签约账号对应的支付宝用户ID" />
+		<property name="business.param.alipayBody" defaultValue="banmaouting"
+			description="订单交易描述" />
+		<property name="business.param.alipaySubject" defaultValue="banmaouting"
+			description="订单标题" />
+		<property name="business.param.alipayTimeoutExpress"
+			defaultValue="30m" description="未付款支付宝交易的超时时间" />
+		<property name="business.param.alipayNotifyUrl"
+			defaultValue="https://userappapi2.banmabike.com/zebraclientapi/payapi/alipayNotifyURL"
+			description="接收异步通知的URL" />
+		<property name="business.param.wxNotifyUrl"
+			defaultValue="https://userappapi2.banmabike.com/zebraclientapi/payapi/weixinNotifyURL"
+			description="微信配置参数" />
+	</group>
+
+	<script>
+		<generate template="application.properties.vm" destfile="WEB-INF/classes/application.properties"
+			charset="UTF-8" encoding="UTF-8" />
+	</script>
+
+</config>

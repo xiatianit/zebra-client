@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zebra.zebraclient.dal.mapper.BikeChargePriceMapper">
+    <resultMap type="com.zebra.zebraclient.dal.dataobject.BikeChargePriceDO" id="BikeChargePriceResult">
+        <id property="id" column="id"/>
+        <result property="bikeModelCode" column="bike_model_code"/>
+        <result property="bikeModelName" column="bike_model_name"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="unit" column="unit"/>
+        <result property="franchiserCode" column="franchiser_code"/>
+        <result property="franchiserName" column="franchiser_name"/>
+    </resultMap>
+
+    <sql id="selectFields">
+		c.id,
+		c.bike_model_code,
+		c.bike_model_name,
+		c.unit_price,
+		c.unit,
+		c.franchiser_code,
+		c.franchiser_name
+	</sql>
+
+    <sql id="searchCondition">
+        <if test="id != null">
+            c.id = #{id}
+        </if>
+        <if test="bikeModelCode != null">
+            AND c.bike_model_code = #{bikeModelCode}
+        </if>
+        <if test="bikeModelName != null">
+            AND c.bike_model_name = #{bikeModelName}
+        </if>
+        <if test="unitPrice != null">
+            AND c.unit_price = #{unitPrice}
+        </if>
+        <if test="unit != null">
+            AND c.unit = #{unit}
+        </if>
+        <if test="franchiserCode != null">
+            AND c.franchiser_code = #{franchiserCode}
+        </if>
+        <if test="franchiserName != null">
+            AND c.franchiser_name = #{franchiserName}
+        </if>
+    </sql>
+
+    <!-- 添加 -->
+    <insert id="insertBikeChargePrice" parameterType="com.zebra.zebraclient.dal.dataobject.BikeChargePriceDO">
+		INSERT INTO c_bike_charge_price(
+			bike_model_code,
+			bike_model_name,
+			unit_price,
+			unit,
+			franchiser_code,
+			franchiser_name
+		) VALUES (
+			#{bikeModelCode},
+			#{bikeModelName},
+			#{unitPrice},
+			#{unit},
+			#{franchiserCode},
+			#{franchiserName}
+		)
+	</insert>
+
+    <!-- 根据主键查询 -->
+    <select id="selectBikeChargePriceById" parameterType="java.lang.Long" resultMap="BikeChargePriceResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_bike_charge_price c
+        WHERE
+        c.id = #{id}
+    </select>
+
+    <select id="selectBikeChargePrice" parameterType="com.zebra.zebraclient.dal.dataobject.BikeChargePriceDO" resultMap="BikeChargePriceResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_bike_charge_price c
+        WHERE
+        <if test="bikeModelName != null">
+            c.bike_model_name = #{bikeModelName}
+        </if>
+        <if test="franchiserCode != null">
+            AND c.franchiser_code = #{franchiserCode}
+        </if>
+    </select>
+
+    <!-- 查询列表 -->
+    <select id="selectBikeChargePriceList" parameterType="com.zebra.zebraclient.dal.dataobject.BikeChargePriceDO"
+            resultMap="BikeChargePriceResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_bike_charge_price c
+        <where>
+            <include refid="searchCondition"/>
+        </where>
+    </select>
+
+    <!-- 分页计数 -->
+    <select id="selectBikeChargePriceCount" parameterType="com.zebra.zebraclient.dal.dataobject.BikeChargePriceDO"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        c_bike_charge_price c
+        <where>
+            <include refid="searchCondition"/>
+        </where>
+    </select>
+
+    <!-- 分页查找 -->
+    <select id="selectBikeChargePricePage" parameterType="com.zebra.zebraclient.dal.dataobject.BikeChargePriceDO"
+            resultMap="BikeChargePriceResult">
+        SELECT
+        <include refid="selectFields"/>
+        FROM
+        c_bike_charge_price c
+        <where>
+            <include refid="searchCondition"/>
+        </where>
+        ORDER BY c.id DESC
+        LIMIT #{pageIndex}, #{pageSize}
+    </select>
+
+    <!-- 完全修改 -->
+    <update id="updateBikeChargePrice" parameterType="com.zebra.zebraclient.dal.dataobject.BikeChargePriceDO">
+		UPDATE 
+			c_bike_charge_price 
+		SET
+			bike_model_code = #{bikeModelCode},
+			bike_model_name = #{bikeModelName},
+			unit_price = #{unitPrice},
+			unit = #{unit},
+			franchiser_code = #{franchiserCode},
+			franchiser_name = #{franchiserName}
+		WHERE 
+			id = #{id}
+	</update>
+
+    <!-- 选择性修改 -->
+    <update id="updateBikeChargePriceSelective" parameterType="com.zebra.zebraclient.dal.dataobject.BikeChargePriceDO">
+        UPDATE
+        c_bike_charge_price
+        SET
+        <if test="bikeModelCode != null">
+            bike_model_code = #{bikeModelCode},
+        </if>
+        <if test="bikeModelName != null">
+            bike_model_name = #{bikeModelName},
+        </if>
+        <if test="unitPrice != null">
+            unit_price = #{unitPrice},
+        </if>
+        <if test="unit != null">
+            unit = #{unit},
+        </if>
+        <if test="franchiserCode != null">
+            franchiser_code = #{franchiserCode},
+        </if>
+        <if test="franchiserName != null">
+            franchiser_name = #{franchiserName}
+        </if>
+        WHERE
+        id = #{id}
+    </update>
+
+    <!-- 删除 -->
+    <update id="deleteBikeChargePrice" parameterType="java.lang.Long">
+        <!-- 没有is_delete字段 -->
+        delete FROM
+        c_bike_charge_price
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>
